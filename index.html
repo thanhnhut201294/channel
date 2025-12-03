@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>TikTok Multi-Channel Analyzer</title>
+  <title>TikTok Multi-Channel Analyzer V2</title>
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -12,14 +12,14 @@
   <style>
     :root {
       /* Bảng màu Neubrutalism */
-      --primary: #ff0050;      /* Hồng TikTok pha đỏ */
-      --secondary: #00f2ea;    /* Xanh Cyan nổi bật */
-      --bg-color: #f0f4f8;     /* Nền xám xanh nhạt */
-      --border-color: #000000; /* Viền đen tuyệt đối */
+      --primary: #ff0050;      
+      --secondary: #00f2ea;    
+      --bg-color: #f0f4f8;     
+      --border-color: #000000; 
       --card-bg: #ffffff;
       --text-color: #000000;
       
-      /* Cấu hình Shadow & Border chuẩn */
+      /* Style Config */
       --hard-shadow: 8px 8px 0px var(--border-color);
       --btn-shadow: 3px 3px 0px var(--border-color);
       --input-shadow: 2px 2px 0px var(--border-color);
@@ -27,7 +27,6 @@
       --border-thin: 2px solid var(--border-color);
       --radius-xl: 15px;
       --radius-md: 10px;
-      --radius-sm: 6px;
     }
 
     body { 
@@ -36,16 +35,15 @@
       background: var(--bg-color); 
       color: var(--text-color); 
       background-image: radial-gradient(#000 1px, transparent 1px);
-      background-size: 20px 20px; /* Họa tiết chấm bi nhỏ cho style hoạt hình */
+      background-size: 20px 20px;
     }
 
-    /* Nút Quay lại trang chủ */
+    /* Nút Quay lại */
     .nav-top {
-      max-width: 1280px;
+      max-width: 1400px;
       margin: 0 auto 20px auto;
       display: flex;
     }
-    
     .btn-home {
       text-decoration: none;
       background: #ffffff;
@@ -63,16 +61,12 @@
     .btn-home:hover {
       transform: translate(-2px, -2px);
       box-shadow: 5px 5px 0px var(--border-color);
-      background: #fff5bc; /* Vàng nhạt khi hover */
-    }
-    .btn-home:active {
-      transform: translate(0, 0);
-      box-shadow: 1px 1px 0px var(--border-color);
+      background: #fff5bc;
     }
 
-    /* Khung chính (Card) */
+    /* Khung chính - Đã mở rộng lên 1400px */
     main { 
-      max-width: 1280px; 
+      max-width: 1400px; 
       margin: 0 auto; 
       background: var(--card-bg); 
       padding: 30px; 
@@ -81,7 +75,6 @@
       box-shadow: var(--hard-shadow);
     }
     
-    /* Header Cartoon */
     h1 { 
       font-family: 'Fredoka', sans-serif;
       font-size: 2.5rem;
@@ -91,11 +84,10 @@
       text-transform: uppercase;
       letter-spacing: 1px;
       margin-bottom: 30px;
-      text-shadow: 2px 2px 0px #000; /* Shadow chữ */
+      text-shadow: 2px 2px 0px #000;
       -webkit-text-stroke: 1px black;
     }
     
-    /* Layout Input */
     .control-panel { 
       display: grid; 
       grid-template-columns: 1fr 320px; 
@@ -105,7 +97,6 @@
     
     .input-section { display: flex; flex-direction: column; gap: 10px; }
     
-    /* Style cho Textarea & Input */
     textarea, input[type="number"] { 
       width: 100%; 
       padding: 15px; 
@@ -114,8 +105,6 @@
       box-shadow: var(--input-shadow);
       font-family: 'Be Vietnam Pro', monospace; 
       font-size: 15px;
-      background: #fff;
-      color: #000;
       box-sizing: border-box;
       transition: 0.2s;
     }
@@ -128,7 +117,7 @@
     textarea { height: 140px; resize: vertical; }
     
     .settings-section { 
-      background: #fff5f5; /* Nền hồng phấn nhẹ */
+      background: #fff5f5;
       padding: 20px; 
       border-radius: var(--radius-md); 
       border: var(--border-thin); 
@@ -147,7 +136,6 @@
       margin-bottom: 8px; 
     }
 
-    /* Buttons Style Neubrutalism */
     .btn-group { display: flex; flex-direction: column; gap: 12px; margin-top: auto; }
     
     button { 
@@ -168,17 +156,12 @@
       transform: translate(-2px, -2px);
       box-shadow: 5px 5px 0px var(--border-color);
     }
-    button:active:not(:disabled) {
-      transform: translate(0, 0);
-      box-shadow: 0px 0px 0px var(--border-color);
-    }
-
-    #analyzeBtn { background: var(--secondary); } /* Xanh */
-    #stopBtn { background: var(--primary); color: #fff; display: none; } /* Đỏ */
-    #exportBtn { background: #ffbd00; } /* Vàng */
+    
+    #analyzeBtn { background: var(--secondary); }
+    #stopBtn { background: var(--primary); color: #fff; display: none; }
+    #exportBtn { background: #ffbd00; }
     #exportBtn:disabled { background: #e0e0e0; color: #888; cursor: not-allowed; box-shadow: none; transform: none;}
 
-    /* Progress Bar Style Cartoon */
     .progress-container { 
       height: 20px; 
       background: #fff; 
@@ -191,19 +174,12 @@
     }
     .progress-bar { 
       height: 100%; 
-      background: repeating-linear-gradient(
-        45deg,
-        var(--secondary),
-        var(--secondary) 10px,
-        #00c4bd 10px,
-        #00c4bd 20px
-      );
+      background: repeating-linear-gradient(45deg, var(--secondary), var(--secondary) 10px, #00c4bd 10px, #00c4bd 20px);
       width: 0%; 
       transition: width 0.3s ease; 
       border-right: 2px solid #000;
     }
 
-    /* Logger */
     #status { 
       font-family: 'Be Vietnam Pro', monospace; 
       font-weight: 600;
@@ -217,7 +193,7 @@
       border-radius: 6px;
     }
 
-    /* Table Style Neubrutalism */
+    /* Table Styles */
     .table-container { 
       overflow-x: auto; 
       border: var(--border-thin); 
@@ -226,12 +202,12 @@
       box-shadow: var(--input-shadow);
       background: #fff;
     }
-    table { width: 100%; border-collapse: collapse; min-width: 1000px; font-size: 15px; }
+    table { width: 100%; border-collapse: collapse; min-width: 1200px; font-size: 14px; }
     
     th { 
       background: var(--secondary); 
       color: #000; 
-      padding: 15px; 
+      padding: 12px; 
       text-align: left; 
       white-space: nowrap; 
       position: sticky; 
@@ -240,26 +216,24 @@
       border-bottom: var(--border-thin);
       border-right: 1px solid #000;
       font-family: 'Fredoka', sans-serif;
-      font-size: 16px;
+      font-size: 15px;
     }
     
     td { 
       border-bottom: 1px solid #000; 
       border-right: 1px solid #000;
-      padding: 12px 15px; 
+      padding: 10px 12px; 
       vertical-align: middle; 
       color: #000; 
       font-weight: 500;
     }
     td:last-child, th:last-child { border-right: none; }
-    
     tr:nth-child(even) { background-color: #f9f9f9; }
-    tr:hover { background-color: #fffde7; } /* Hover màu vàng nhạt */
+    tr:hover { background-color: #fffde7; }
 
-    /* Specific Column Styles */
     .avatar-cell img { 
-      width: 45px; 
-      height: 45px; 
+      width: 40px; 
+      height: 40px; 
       border-radius: 50%; 
       object-fit: cover; 
       border: 2px solid #000; 
@@ -267,14 +241,16 @@
       margin-right: 10px; 
       background: #fff;
     }
-    .metric-high { color: var(--primary); font-weight: 800; }
-    .metric-avg { font-weight: 700; color: #0075ff; }
     
-    /* Badges */
+    /* Màu sắc chỉ số */
+    .val-highlight { color: #0075ff; font-weight: 700; } /* Xanh dương */
+    .val-super { color: #d63384; font-weight: 800; } /* Hồng đậm */
+    .val-percent { color: #198754; font-weight: 700; background: #e6f7ed; padding: 2px 6px; border-radius: 6px; border: 1px solid #000; } /* Xanh lá */
+    
     .status-badge { 
-      padding: 4px 10px; 
+      padding: 4px 8px; 
       border-radius: 20px; 
-      font-size: 12px; 
+      font-size: 11px; 
       font-weight: 800; 
       text-transform: uppercase; 
       border: 2px solid #000;
@@ -284,7 +260,6 @@
     .status-err { background: #ff8888; color: #000; }
     .status-wait { background: #fff3cd; color: #000; }
 
-    /* Responsive */
     @media (max-width: 768px) {
       .control-panel { grid-template-columns: 1fr; }
       h1 { font-size: 1.8rem; }
@@ -302,7 +277,7 @@
   </div>
 
 <main>
-  <h1>📈 TikTok Multi-Channel Analyzer</h1>
+  <h1>📈 TikTok Channel Analyzer V2</h1>
 
   <div class="control-panel">
     <div class="input-section">
@@ -314,11 +289,11 @@
       <div>
         <label>Số lượng video cần lấy</label>
         <input type="number" id="limitInput" value="10" min="1" max="48">
-        <small style="color: #000; font-weight: 600; font-size: 12px; display:block; margin-top:8px">ℹ️ Mặc định 10 video gần nhất để tính trung bình (Max 48).</small>
+        <small style="color: #000; font-weight: 600; font-size: 12px; display:block; margin-top:8px">ℹ️ Mặc định 10 video (Max 48).</small>
       </div>
       
       <div class="btn-group">
-        <button id="analyzeBtn">🚀 Quét Hàng Loạt</button>
+        <button id="analyzeBtn">🚀 Quét Chi Tiết</button>
         <button id="stopBtn">⏹ Dừng Lại</button>
         <button id="exportBtn" disabled>📥 Xuất Excel</button>
       </div>
@@ -334,28 +309,34 @@
     <table id="resultTable">
       <thead>
         <tr>
-          <th width="5%">STT</th>
-          <th width="25%">Kênh (User)</th>
-          <th width="10%">Số Vid</th>
-          <th width="15%">Tổng View</th>
-          <th width="15%">TB View</th>
-          <th width="15%">Tổng Tương Tác*</th>
-          <th width="15%">TB Tương Tác</th>
-          <th width="10%">Status</th>
+          <th width="3%">STT</th>
+          <th width="15%">Kênh (User)</th>
+          <th width="5%">Videos</th>
+          <th width="8%">Tổng View</th>
+          <th width="8%">TB View</th>
+          
+          <th width="8%">Tổng Cmt</th>
+          <th width="8%">TB Cmt</th>
+          <th width="8%">% Cmt</th>
+          
+          <th width="10%">Tổng Tương Tác</th>
+          <th width="10%">TB Tương Tác</th>
+          <th width="10%">% Tương Tác</th>
+          
+          <th width="7%">Status</th>
         </tr>
       </thead>
       <tbody>
         </tbody>
     </table>
   </div>
-  <div style="margin-top: 15px; font-size: 13px; font-weight: bold; color: #555;">
-    * Tổng Tương Tác = Tim + Comment + Share + Save
+  <div style="margin-top: 15px; font-size: 13px; font-weight: bold; color: #555; display: flex; gap: 20px;">
+    <span>* % Cmt = (Tổng Cmt / Tổng View) * 100</span>
+    <span>* % Tương Tác = (Tổng Tương Tác / Tổng View) * 100</span>
   </div>
 </main>
 
 <script>
-  // === LOGIC JAVASCRIPT GIỮ NGUYÊN 100% ===
-
   // === CONFIG & UTILS ===
   const PROXY_LIST = [
     { url: 'https://api.codetabs.com/v1/proxy?quest=', type: 'direct' },
@@ -374,7 +355,6 @@
     return new Promise(resolve => setTimeout(resolve, ms));
   }
 
-  // Hàm trích xuất username từ link hoặc text
   function extractUsername(input) {
     input = input.trim();
     try {
@@ -382,16 +362,13 @@
         const match = input.match(/@([a-zA-Z0-9_.]+)/);
         return match ? match[1] : null;
       }
-      // Nếu nhập @username
       if (input.startsWith('@')) return input.substring(1);
-      // Nếu nhập username thuần
       return input;
     } catch (e) {
       return null;
     }
   }
 
-  // === CORE FETCHING LOGIC ===
   async function smartFetch(targetUrl) {
     for (const proxy of PROXY_LIST) {
       try {
@@ -421,8 +398,6 @@
     const allVideos = [];
     let cursor = 0;
     let hasMore = true;
-
-    // Giới hạn cứng tối đa 48 để tránh treo
     if (limit > 48) limit = 48;
 
     while (hasMore && allVideos.length < limit) {
@@ -441,7 +416,7 @@
 
       cursor = data.data.cursor;
       hasMore = data.data.hasMore;
-      if (hasMore) await sleep(1000); // Nghỉ nhẹ giữa các trang
+      if (hasMore) await sleep(1000); 
     }
     return allVideos;
   }
@@ -451,13 +426,11 @@
     const inputRaw = document.getElementById('channelInput').value;
     const limit = parseInt(document.getElementById('limitInput').value) || 10;
     
-    // Lọc danh sách user
     const lines = inputRaw.split('\n').filter(line => line.trim() !== '');
-    const usernames = [...new Set(lines.map(extractUsername).filter(u => u))]; // Unique users
+    const usernames = [...new Set(lines.map(extractUsername).filter(u => u))]; 
 
     if (usernames.length === 0) return alert('Vui lòng nhập ít nhất 1 link kênh hoặc username!');
 
-    // Reset UI
     isRunning = true;
     resultsData = [];
     document.querySelector('tbody').innerHTML = '';
@@ -467,20 +440,19 @@
     document.querySelector('.progress-container').style.display = 'block';
     updateProgress(0, usernames.length);
 
-    // Xử lý từng user
     for (let i = 0; i < usernames.length; i++) {
       if (!isRunning) break;
 
       const user = usernames[i];
       log(`⏳ Đang quét [${i+1}/${usernames.length}]: ${user}...`);
       
-      // Tạo một hàng "đang tải"
       const tr = document.createElement('tr');
       tr.id = `row-${user}`;
+      // colspan adjusted for new columns (total 12 cols now, start with 2, so span 10)
       tr.innerHTML = `
         <td>${i+1}</td>
         <td>${user}</td>
-        <td colspan="6"><span class="status-badge status-wait">Đang xử lý...</span></td>
+        <td colspan="10"><span class="status-badge status-wait">Đang xử lý...</span></td>
       `;
       document.querySelector('tbody').appendChild(tr);
 
@@ -488,26 +460,20 @@
         const videos = await fetchUserVideos(user, limit);
         const stats = calculateStats(videos);
         
-        // Lưu dữ liệu để xuất excel
         resultsData.push({ user, ...stats, status: 'OK' });
-        
-        // Cập nhật hàng đã tạo
         updateRowSuccess(tr, user, videos[0]?.author, stats);
         
       } catch (error) {
-        // Cập nhật hàng lỗi
         resultsData.push({ user, status: 'Error' });
         tr.innerHTML = `
           <td>${i+1}</td>
           <td>${user}</td>
-          <td colspan="5" style="color:red; font-weight:bold;">Lỗi: ${error.message}</td>
+          <td colspan="9" style="color:red; font-weight:bold;">Lỗi: ${error.message}</td>
           <td><span class="status-badge status-err">FAIL</span></td>
         `;
       }
 
       updateProgress(i + 1, usernames.length);
-      
-      // Nghỉ giữa các user để tránh spam API
       if (i < usernames.length - 1) await sleep(1500); 
     }
 
@@ -533,13 +499,14 @@
     document.getElementById('progressBar').style.width = `${percent}%`;
   }
 
+  // === UPDATED CALCULATION LOGIC ===
   function calculateStats(videos) {
     let totalView = 0, totalLike = 0, totalCmt = 0, totalShare = 0, totalSave = 0;
     
     videos.forEach(v => {
       totalView += (v.play_count || 0);
       totalLike += (v.digg_count || 0);
-      totalCmt += (v.comment_count || 0);
+      totalCmt  += (v.comment_count || 0);
       totalShare += (v.share_count || 0);
       totalSave += (v.collect_count || 0);
     });
@@ -547,13 +514,26 @@
     const count = videos.length;
     const totalInteraction = totalLike + totalCmt + totalShare + totalSave;
     
+    // Tính toán tỷ lệ, xử lý chia cho 0
+    const avgView = count ? Math.round(totalView / count) : 0;
+    const avgCmt  = count ? Math.round(totalCmt / count) : 0;
+    const avgInteraction = count ? Math.round(totalInteraction / count) : 0;
+    
+    // Tỷ lệ %
+    const cmtRate = totalView > 0 ? ((totalCmt / totalView) * 100).toFixed(2) : "0.00";
+    const engagementRate = totalView > 0 ? ((totalInteraction / totalView) * 100).toFixed(2) : "0.00";
+
     return {
       count,
       totalView,
-      avgView: count ? Math.round(totalView / count) : 0,
+      avgView,
+      totalCmt,
+      avgCmt,
+      cmtRate,
       totalInteraction,
-      avgInteraction: count ? Math.round(totalInteraction / count) : 0,
-      avatar: videos[0]?.author?.avatar || '' // Lấy avatar từ video đầu tiên
+      avgInteraction,
+      engagementRate,
+      avatar: videos[0]?.author?.avatar || ''
     };
   }
 
@@ -571,29 +551,43 @@
         </div>
       </td>
       <td style="text-align:center">${stats.count}</td>
+      
       <td>${stats.totalView.toLocaleString()}</td>
-      <td class="metric-avg">${stats.avgView.toLocaleString()}</td>
+      <td class="val-highlight">${stats.avgView.toLocaleString()}</td>
+      
+      <td>${stats.totalCmt.toLocaleString()}</td>
+      <td class="val-highlight">${stats.avgCmt.toLocaleString()}</td>
+      <td><span class="val-percent">${stats.cmtRate}%</span></td>
+      
       <td>${stats.totalInteraction.toLocaleString()}</td>
-      <td class="metric-high">${stats.avgInteraction.toLocaleString()}</td>
+      <td class="val-super">${stats.avgInteraction.toLocaleString()}</td>
+      <td><span class="val-percent" style="background:#fff3cd; color:#664d03">${stats.engagementRate}%</span></td>
+      
       <td><span class="status-badge status-ok">OK</span></td>
     `;
   }
 
-  // === EXPORT EXCEL (CSV) ===
+  // === UPDATED EXPORT EXCEL (CSV) ===
   document.getElementById('exportBtn').addEventListener('click', () => {
     if (!resultsData.length) return;
 
-    const headers = ['User ID', 'So Video Quet', 'Tong View', 'TB View', 'Tong Tuong Tac', 'TB Tuong Tac', 'Trang Thai'];
+    const headers = [
+      'User ID', 
+      'So Video', 
+      'Tong View', 'TB View', 
+      'Tong Comment', 'TB Comment', '% Comment', 
+      'Tong Tuong Tac', 'TB Tuong Tac', '% Tuong Tac', 
+      'Trang Thai'
+    ];
     
     const rows = resultsData.map(d => {
-      if (d.status !== 'OK') return [d.user, 0, 0, 0, 0, 0, 'Loi/An'];
+      if (d.status !== 'OK') return [d.user, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Loi/An'];
       return [
         d.user,
         d.count,
-        d.totalView,
-        d.avgView,
-        d.totalInteraction,
-        d.avgInteraction,
+        d.totalView, d.avgView,
+        d.totalCmt, d.avgCmt, `${d.cmtRate}%`,
+        d.totalInteraction, d.avgInteraction, `${d.engagementRate}%`,
         'OK'
       ];
     });
@@ -603,7 +597,7 @@
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
     link.href = url;
-    link.setAttribute("download", `TikTok_Bulk_Analyze_${new Date().getTime()}.csv`);
+    link.setAttribute("download", `TikTok_Analyzer_V2_${new Date().getTime()}.csv`);
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
