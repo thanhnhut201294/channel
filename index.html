@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>TikTok Multi-Channel Analyzer V4 (Sort & Follower)</title>
+  <title>TikTok Multi-Channel Analyzer V4.1</title>
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -215,7 +215,7 @@
       box-shadow: var(--input-shadow);
       background: #fff;
     }
-    table { width: 100%; border-collapse: collapse; min-width: 1300px; font-size: 14px; }
+    table { width: 100%; border-collapse: collapse; min-width: 1200px; font-size: 14px; }
     
     /* Sortable Headers */
     th { 
@@ -231,14 +231,14 @@
       border-right: 1px solid #000;
       font-weight: 700;
       font-size: 15px;
-      user-select: none; /* Prevent text selection when clicking */
+      user-select: none;
     }
     th.sortable {
       cursor: pointer;
       transition: background 0.2s;
     }
     th.sortable:hover {
-      background: #00c4bd; /* Darker cyan on hover */
+      background: #00c4bd;
     }
     .sort-icon {
       font-size: 12px;
@@ -276,8 +276,8 @@
     }
     
     .avatar-img { 
-      width: 50px; 
-      height: 50px; 
+      width: 45px; 
+      height: 45px; 
       border-radius: 50%; 
       object-fit: cover; 
       border: 2px solid #000; 
@@ -300,18 +300,6 @@
       color: #666;
       line-height: 1.4;
     }
-    .follower-badge {
-      display: inline-block;
-      margin-top: 4px;
-      font-size: 11px;
-      font-weight: 700;
-      color: #000;
-      background: #e9ecef;
-      padding: 2px 6px;
-      border-radius: 4px;
-      border: 1px solid #ccc;
-    }
-    .follower-badge span { color: var(--primary); }
 
     /* Column Specifics */
     .val-highlight { color: #0075ff; font-weight: 700; } 
@@ -349,7 +337,7 @@
   </div>
 
 <main>
-  <h1>📈 TikTok Analyzer V4 (Pro)</h1>
+  <h1>📈 TikTok Analyzer V4.1 (Lite)</h1>
 
   <div class="control-panel">
     <div class="input-section">
@@ -382,13 +370,11 @@
       <thead>
         <tr>
           <th width="3%">#</th>
-          <th width="20%">Kênh (Info)</th> 
-          
-          <th width="8%" class="sortable" onclick="handleSort('followers')">Followers <span class="sort-icon">⇅</span></th>
+          <th width="25%">Kênh (Info)</th> 
           <th width="5%">Videos</th>
           
-          <th width="8%" class="sortable" onclick="handleSort('totalView')">T.View <span class="sort-icon">⇅</span></th>
-          <th width="8%" class="sortable" onclick="handleSort('avgView')">TB View <span class="sort-icon">⇅</span></th>
+          <th width="10%" class="sortable" onclick="handleSort('totalView')">T.View <span class="sort-icon">⇅</span></th>
+          <th width="10%" class="sortable" onclick="handleSort('avgView')">TB View <span class="sort-icon">⇅</span></th>
           
           <th width="10%" class="sortable" onclick="handleSort('totalInteraction')">T.Tác <span class="sort-icon">⇅</span></th>
           <th width="10%" class="sortable" onclick="handleSort('avgInteraction')">TB T.Tác <span class="sort-icon">⇅</span></th>
@@ -419,7 +405,7 @@
 
   let isRunning = false;
   let resultsData = [];
-  let currentSort = { col: null, dir: 'desc' }; // Default sort state
+  let currentSort = { col: null, dir: 'desc' }; 
 
   function log(msg) {
     document.getElementById('status').textContent = msg;
@@ -427,14 +413,6 @@
 
   function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
-  }
-
-  function formatCompactNumber(number) {
-    if (!number) return '0';
-    return Intl.NumberFormat('en-US', {
-      notation: "compact",
-      maximumFractionDigits: 1
-    }).format(number);
   }
 
   function extractUsername(input) {
@@ -476,20 +454,6 @@
     throw new Error("Connection failed");
   }
 
-  // Lấy thông tin User (Followers, Avatar chuẩn)
-  async function fetchUserInfo(username) {
-    const targetUrl = `https://www.tikwm.com/api/user/info?unique_id=${username}`;
-    try {
-      const data = await smartFetch(targetUrl);
-      if (data?.data?.user) {
-        return data.data.user; // Trả về object user chứa follower_count
-      }
-    } catch (e) {
-      console.warn("User info fetch failed:", e);
-    }
-    return null; // Trả về null nếu lỗi để xử lý fallback
-  }
-
   async function fetchUserVideos(username, limit) {
     const allVideos = [];
     let cursor = 0;
@@ -526,8 +490,8 @@
     if (usernames.length === 0) return alert('Vui lòng nhập ít nhất 1 link kênh hoặc username!');
 
     isRunning = true;
-    resultsData = []; // Clear old data
-    currentSort = { col: null, dir: 'desc' }; // Reset sort
+    resultsData = [];
+    currentSort = { col: null, dir: 'desc' };
     
     const tbody = document.querySelector('tbody');
     tbody.innerHTML = '';
@@ -544,42 +508,35 @@
       const user = usernames[i];
       log(`⏳ Đang xử lý [${i+1}/${usernames.length}]: ${user}...`);
       
-      // Tạo hàng placeholder
       const tr = document.createElement('tr');
       tr.innerHTML = `<td>${i+1}</td><td colspan="10" class="status-badge status-wait" style="text-align:center">Đang tải dữ liệu...</td>`;
       tbody.appendChild(tr);
 
       try {
-        // 1. Lấy thông tin User trước (để lấy follower)
-        const userInfo = await fetchUserInfo(user);
-        
-        // 2. Lấy danh sách Video
+        // Chỉ lấy Video, không gọi API User Info riêng nữa
         const videos = await fetchUserVideos(user, limit);
-        
-        // 3. Tính toán
         const stats = calculateStats(videos);
         
-        // 4. Merge thông tin
+        // Lấy thông tin tác giả từ video đầu tiên
+        const author = videos[0]?.author;
+
         const finalData = {
           id: i + 1,
           user: user,
-          nickname: userInfo?.unique_id || videos[0]?.author?.unique_id || user,
-          displayName: userInfo?.nickname || videos[0]?.author?.nickname || user,
-          avatar: userInfo?.avatar || videos[0]?.author?.avatar || '',
-          followers: userInfo?.follower_count || 0, // Số follower
+          nickname: author?.unique_id || user,
+          displayName: author?.nickname || user,
+          avatar: author?.avatar || '',
           ...stats,
           status: 'OK'
         };
 
         resultsData.push(finalData);
-        
-        // 5. Render lại hàng này (thay thế placeholder)
         renderSingleRow(tr, finalData);
         
       } catch (error) {
         const errorData = {
            id: i + 1, user: user, status: 'Error', errorMsg: error.message,
-           followers: 0, totalView: 0, avgView: 0, totalInteraction: 0
+           totalView: 0, avgView: 0, totalInteraction: 0
         };
         resultsData.push(errorData);
         tr.innerHTML = `
@@ -644,10 +601,7 @@
 
   // === RENDERING & SORTING ===
   
-  // Render 1 hàng khi chạy realtime
   function renderSingleRow(tr, d) {
-    const displayFollower = formatCompactNumber(d.followers);
-    
     tr.innerHTML = `
       <td>${d.id}</td>
       <td>
@@ -656,11 +610,9 @@
           <div class="user-info">
             <div class="user-name">${d.displayName}</div>
             <div class="user-handle">@${d.nickname}</div>
-            <div class="follower-badge">👥 <span>${displayFollower}</span></div>
           </div>
         </a>
       </td>
-      <td>${d.followers.toLocaleString()}</td>
       <td style="text-align:center">${d.count}</td>
       
       <td>${d.totalView.toLocaleString()}</td>
@@ -677,7 +629,6 @@
     `;
   }
 
-  // Render lại toàn bộ bảng (dùng khi Sort)
   function renderTableAll() {
     const tbody = document.querySelector('tbody');
     tbody.innerHTML = '';
@@ -685,7 +636,7 @@
     resultsData.forEach((d, index) => {
       const tr = document.createElement('tr');
       if(d.status === 'OK') {
-        renderSingleRow(tr, {...d, id: index + 1}); // Cập nhật lại STT theo thứ tự hiển thị
+        renderSingleRow(tr, {...d, id: index + 1}); 
       } else {
         tr.innerHTML = `<td>${index+1}</td><td>${d.user}</td><td colspan="9" style="color:red">Lỗi: ${d.errorMsg}</td><td>Error</td>`;
       }
@@ -693,28 +644,24 @@
     });
   }
 
-  // Hàm Sắp xếp
   window.handleSort = function(colName) {
     if (!resultsData.length) return;
 
-    // Toggle direction if clicking same column
     if (currentSort.col === colName) {
       currentSort.dir = currentSort.dir === 'asc' ? 'desc' : 'asc';
     } else {
       currentSort.col = colName;
-      currentSort.dir = 'desc'; // Default to Descending for metrics (cao nhất lên đầu)
+      currentSort.dir = 'desc'; 
     }
 
-    // Update UI Indicators
     document.querySelectorAll('th.sortable').forEach(th => {
       th.classList.remove('sorted-asc', 'sorted-desc');
     });
     const activeHeader = document.querySelector(`th[onclick*="${colName}"]`);
     if(activeHeader) activeHeader.classList.add(currentSort.dir === 'asc' ? 'sorted-asc' : 'sorted-desc');
 
-    // Sort Logic
     resultsData.sort((a, b) => {
-      if (a.status !== 'OK') return 1; // Đẩy lỗi xuống dưới
+      if (a.status !== 'OK') return 1; 
       if (b.status !== 'OK') return -1;
 
       let valA = parseFloat(a[colName]);
@@ -735,7 +682,7 @@
     if (!resultsData.length) return;
 
     const headers = [
-      'User ID', 'Ten Hien Thi', 'Followers',
+      'User ID', 'Ten Hien Thi',
       'So Video', 
       'Tong View', 'TB View', 
       'Tong Tuong Tac', 'TB Tuong Tac', '% Tuong Tac', 
@@ -744,11 +691,10 @@
     ];
     
     const rows = resultsData.map(d => {
-      if (d.status !== 'OK') return [d.user, '', 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Loi'];
+      if (d.status !== 'OK') return [d.user, '', 0, 0, 0, 0, 0, 0, 0, 0, 'Loi'];
       return [
         d.nickname,
         `"${d.displayName}"`,
-        d.followers,
         d.count,
         d.totalView, d.avgView,
         d.totalInteraction, d.avgInteraction, `${d.engagementRate}%`,
@@ -762,7 +708,7 @@
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
     link.href = url;
-    link.setAttribute("download", `TikTok_Pro_V4_${new Date().getTime()}.csv`);
+    link.setAttribute("download", `TikTok_Lite_V4_${new Date().getTime()}.csv`);
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
