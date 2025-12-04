@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>TikTok Multi-Channel Analyzer V4.1</title>
+  <title>TikTok Multi-Channel Analyzer V4.2 (Export Select)</title>
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -39,7 +39,7 @@
       background-size: 20px 20px;
     }
 
-    button, input, textarea, table, th, td, span, label, small, a {
+    button, input, textarea, table, th, td, span, label, small, a, select {
       font-family: 'Be Vietnam Pro', sans-serif !important;
     }
 
@@ -152,8 +152,32 @@
       margin-bottom: 8px; 
     }
 
+    /* Group Button & Select */
     .btn-group { display: flex; flex-direction: column; gap: 12px; margin-top: auto; }
     
+    /* Export Row */
+    .export-row {
+      display: flex;
+      gap: 8px;
+    }
+
+    /* Dropdown Style */
+    #exportFormat {
+      padding: 12px;
+      border: var(--border-thin);
+      border-radius: var(--radius-md);
+      box-shadow: 3px 3px 0px #000;
+      font-weight: 700;
+      cursor: pointer;
+      background: #fff;
+      outline: none;
+      transition: all 0.1s;
+    }
+    #exportFormat:hover {
+      transform: translate(-2px, -2px);
+      box-shadow: 5px 5px 0px var(--border-color);
+    }
+
     button { 
       padding: 12px 20px; 
       border: var(--border-thin); 
@@ -165,6 +189,7 @@
       transition: all 0.1s; 
       box-shadow: 3px 3px 0px #000;
       text-transform: uppercase;
+      flex: 1; /* Để nút export dãn ra hết mức */
     }
     button:hover:not(:disabled) {
       transform: translate(-2px, -2px);
@@ -217,7 +242,6 @@
     }
     table { width: 100%; border-collapse: collapse; min-width: 1200px; font-size: 14px; }
     
-    /* Sortable Headers */
     th { 
       background: var(--secondary); 
       color: #000; 
@@ -233,18 +257,9 @@
       font-size: 15px;
       user-select: none;
     }
-    th.sortable {
-      cursor: pointer;
-      transition: background 0.2s;
-    }
-    th.sortable:hover {
-      background: #00c4bd;
-    }
-    .sort-icon {
-      font-size: 12px;
-      margin-left: 5px;
-      opacity: 0.5;
-    }
+    th.sortable { cursor: pointer; transition: background 0.2s; }
+    th.sortable:hover { background: #00c4bd; }
+    .sort-icon { font-size: 12px; margin-left: 5px; opacity: 0.5; }
     th.sorted-asc .sort-icon { opacity: 1; content: '▲'; }
     th.sorted-desc .sort-icon { opacity: 1; content: '▼'; }
 
@@ -271,9 +286,7 @@
       border-radius: 8px;
       transition: background 0.1s;
     }
-    .user-link:hover {
-      background: rgba(0,0,0,0.05);
-    }
+    .user-link:hover { background: rgba(0,0,0,0.05); }
     
     .avatar-img { 
       width: 45px; 
@@ -285,21 +298,9 @@
       flex-shrink: 0;
     }
     
-    .user-info {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-    }
-    .user-name {
-      font-weight: 800;
-      font-size: 14px;
-      line-height: 1.2;
-    }
-    .user-handle {
-      font-size: 12px;
-      color: #666;
-      line-height: 1.4;
-    }
+    .user-info { display: flex; flex-direction: column; justify-content: center; }
+    .user-name { font-weight: 800; font-size: 14px; line-height: 1.2; }
+    .user-handle { font-size: 12px; color: #666; line-height: 1.4; }
 
     /* Column Specifics */
     .val-highlight { color: #0075ff; font-weight: 700; } 
@@ -337,7 +338,7 @@
   </div>
 
 <main>
-  <h1>📈 TikTok Analyzer V4.1 (Lite)</h1>
+  <h1>📈 TikTok Analyzer V4.2</h1>
 
   <div class="control-panel">
     <div class="input-section">
@@ -355,7 +356,14 @@
       <div class="btn-group">
         <button id="analyzeBtn">🚀 Quét Dữ Liệu</button>
         <button id="stopBtn">⏹ Dừng Lại</button>
-        <button id="exportBtn" disabled>📥 Xuất Excel</button>
+        
+        <div class="export-row">
+          <select id="exportFormat">
+            <option value="csv">.CSV</option>
+            <option value="xls">.XLS</option>
+          </select>
+          <button id="exportBtn" disabled>📥 Tải Về</button>
+        </div>
       </div>
     </div>
   </div>
@@ -513,11 +521,8 @@
       tbody.appendChild(tr);
 
       try {
-        // Chỉ lấy Video, không gọi API User Info riêng nữa
         const videos = await fetchUserVideos(user, limit);
         const stats = calculateStats(videos);
-        
-        // Lấy thông tin tác giả từ video đầu tiên
         const author = videos[0]?.author;
 
         const finalData = {
@@ -677,10 +682,21 @@
     renderTableAll();
   };
 
-  // === EXPORT EXCEL ===
+  // === EXPORT FUNCTIONALITY (CSV & XLS) ===
   document.getElementById('exportBtn').addEventListener('click', () => {
     if (!resultsData.length) return;
 
+    const format = document.getElementById('exportFormat').value;
+    const time = new Date().getTime();
+
+    if (format === 'csv') {
+      exportCSV(time);
+    } else {
+      exportXLS(time);
+    }
+  });
+
+  function exportCSV(time) {
     const headers = [
       'User ID', 'Ten Hien Thi',
       'So Video', 
@@ -705,14 +721,80 @@
 
     const csvContent = [headers.join(','), ...rows.map(r => r.join(','))].join('\n');
     const blob = new Blob(["\uFEFF" + csvContent], { type: 'text/csv;charset=utf-8;' });
+    downloadFile(blob, `TikTok_Data_${time}.csv`);
+  }
+
+  function exportXLS(time) {
+    // Tạo nội dung HTML Table cho Excel
+    let tableHTML = `
+      <table border="1">
+        <thead>
+          <tr style="background-color:#00f2ea; color:#000;">
+            <th>User ID</th>
+            <th>Tên Hiển Thị</th>
+            <th>Số Video</th>
+            <th>Tổng View</th>
+            <th>TB View</th>
+            <th>Tổng Tương Tác</th>
+            <th>TB Tương Tác</th>
+            <th>% Tương Tác</th>
+            <th>Tổng Comment</th>
+            <th>TB Comment</th>
+            <th>Trạng Thái</th>
+          </tr>
+        </thead>
+        <tbody>
+    `;
+
+    resultsData.forEach(d => {
+      if(d.status !== 'OK') {
+        tableHTML += `<tr><td>${d.user}</td><td colspan="10" style="color:red">Lỗi</td></tr>`;
+      } else {
+        tableHTML += `
+          <tr>
+            <td>${d.nickname}</td>
+            <td>${d.displayName}</td>
+            <td>${d.count}</td>
+            <td>${d.totalView}</td>
+            <td>${d.avgView}</td>
+            <td>${d.totalInteraction}</td>
+            <td>${d.avgInteraction}</td>
+            <td>${d.engagementRate}%</td>
+            <td>${d.totalCmt}</td>
+            <td>${d.avgCmt}</td>
+            <td>OK</td>
+          </tr>
+        `;
+      }
+    });
+
+    tableHTML += `</tbody></table>`;
+
+    // Wrap in standard Excel HTML template
+    const fullHTML = `
+      <html xmlns:o="urn:schemas-microsoft-com:office:office" 
+            xmlns:x="urn:schemas-microsoft-com:office:excel" 
+            xmlns="http://www.w3.org/TR/REC-html40">
+      <head>
+        <meta charset="utf-8">
+        </head>
+      <body>${tableHTML}</body>
+      </html>
+    `;
+
+    const blob = new Blob([fullHTML], { type: 'application/vnd.ms-excel' });
+    downloadFile(blob, `TikTok_Data_${time}.xls`);
+  }
+
+  function downloadFile(blob, filename) {
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
     link.href = url;
-    link.setAttribute("download", `TikTok_Lite_V4_${new Date().getTime()}.csv`);
+    link.setAttribute("download", filename);
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
-  });
+  }
 
 </script>
 </body>
