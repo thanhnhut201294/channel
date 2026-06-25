@@ -1,362 +1,101 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>TikTok Multi-Channel Analyzer V4.2 (Export Select)</title>
-  
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>TikTok Multi-Channel Analyzer V5.0</title>
   <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=Fredoka:wght@600&display=swap" rel="stylesheet">
-
   <style>
-    :root {
-      /* Bảng màu Neubrutalism */
-      --primary: #ff0050;      
-      --secondary: #00f2ea;    
-      --bg-color: #f0f4f8;     
-      --border-color: #000000; 
-      --card-bg: #ffffff;
-      --text-color: #000000;
-      
-      /* Style Config */
-      --hard-shadow: 8px 8px 0px var(--border-color);
-      --btn-shadow: 4px 4px 0px var(--border-color);
-      --input-shadow: 2px 2px 0px var(--border-color);
-      --border-thick: 3px solid var(--border-color);
-      --border-thin: 2px solid var(--border-color);
-      --radius-xl: 15px;
-      --radius-md: 10px;
-      --radius-pill: 50px;
-    }
-
-    body { 
-      font-family: 'Be Vietnam Pro', sans-serif; 
-      padding: 20px; 
-      background: var(--bg-color); 
-      color: var(--text-color); 
-      background-image: radial-gradient(#000 1px, transparent 1px);
-      background-size: 20px 20px;
-    }
-
-    button, input, textarea, table, th, td, span, label, small, a, select {
-      font-family: 'Be Vietnam Pro', sans-serif !important;
-    }
-
-    /* Nút Quay lại (Bên phải) */
-    .nav-top {
-      max-width: 1400px;
-      margin: 0 auto 20px auto;
-      display: flex;
-      justify-content: flex-end;
-    }
-    
-    .btn-home {
-      text-decoration: none;
-      background: #ffffff;
-      color: #000;
-      font-weight: 700;
-      font-size: 15px;
-      padding: 10px 24px;
-      border: var(--border-thick);
-      border-radius: var(--radius-pill);
-      box-shadow: var(--btn-shadow);
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      transition: all 0.1s ease;
-    }
-    .btn-home:hover {
-      transform: translate(-2px, -2px);
-      box-shadow: 6px 6px 0px var(--border-color);
-      background: #fff;
-    }
-    .btn-home:active {
-      transform: translate(2px, 2px);
-      box-shadow: 0px 0px 0px var(--border-color);
-    }
-    .icon-back {
-      font-weight: 900;
-      font-size: 18px;
-      line-height: 1;
-      transform: translateY(-1px);
-    }
-
-    /* Khung chính */
-    main { 
-      max-width: 1400px; 
-      margin: 0 auto; 
-      background: var(--card-bg); 
-      padding: 30px; 
-      border-radius: var(--radius-xl); 
-      border: var(--border-thick);
-      box-shadow: var(--hard-shadow);
-    }
-    
-    h1 { 
-      font-family: 'Fredoka', cursive !important;
-      font-size: 2.5rem;
-      margin-top: 0; 
-      text-align: center; 
-      color: var(--primary); 
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      margin-bottom: 30px;
-      text-shadow: 2px 2px 0px #000;
-      -webkit-text-stroke: 1px black;
-    }
-    
-    .control-panel { 
-      display: grid; 
-      grid-template-columns: 1fr 320px; 
-      gap: 25px; 
-      margin-bottom: 30px; 
-    }
-    
-    .input-section { display: flex; flex-direction: column; gap: 10px; }
-    
-    textarea, input[type="number"] { 
-      width: 100%; 
-      padding: 15px; 
-      border: var(--border-thin); 
-      border-radius: var(--radius-md); 
-      box-shadow: var(--input-shadow);
-      font-size: 15px;
-      box-sizing: border-box;
-      transition: 0.2s;
-    }
-    textarea:focus, input:focus { 
-      outline: none; 
-      background: #f0fbff;
-      transform: translate(-1px, -1px);
-      box-shadow: 4px 4px 0px var(--border-color);
-    }
-    textarea { height: 140px; resize: vertical; }
-    
-    .settings-section { 
-      background: #fff5f5;
-      padding: 20px; 
-      border-radius: var(--radius-md); 
-      border: var(--border-thin); 
-      box-shadow: var(--input-shadow);
-      display: flex; 
-      flex-direction: column; 
-      gap: 15px; 
-    }
-    
-    label { 
-      font-weight: 700; 
-      font-size: 16px; 
-      color: #000; 
-      display: block; 
-      margin-bottom: 8px; 
-    }
-
-    /* Group Button & Select */
-    .btn-group { display: flex; flex-direction: column; gap: 12px; margin-top: auto; }
-    
-    /* Export Row */
-    .export-row {
-      display: flex;
-      gap: 8px;
-    }
-
-    /* Dropdown Style */
-    #exportFormat {
-      padding: 12px;
-      border: var(--border-thin);
-      border-radius: var(--radius-md);
-      box-shadow: 3px 3px 0px #000;
-      font-weight: 700;
-      cursor: pointer;
-      background: #fff;
-      outline: none;
-      transition: all 0.1s;
-    }
-    #exportFormat:hover {
-      transform: translate(-2px, -2px);
-      box-shadow: 5px 5px 0px var(--border-color);
-    }
-
-    button { 
-      padding: 12px 20px; 
-      border: var(--border-thin); 
-      border-radius: var(--radius-md); 
-      cursor: pointer; 
-      font-weight: 700; 
-      font-size: 16px; 
-      color: #000; 
-      transition: all 0.1s; 
-      box-shadow: 3px 3px 0px #000;
-      text-transform: uppercase;
-      flex: 1; /* Để nút export dãn ra hết mức */
-    }
-    button:hover:not(:disabled) {
-      transform: translate(-2px, -2px);
-      box-shadow: 5px 5px 0px var(--border-color);
-    }
-    
-    #analyzeBtn { background: var(--secondary); }
-    #stopBtn { background: var(--primary); color: #fff; display: none; }
-    #exportBtn { background: #ffbd00; }
-    #exportBtn:disabled { background: #e0e0e0; color: #888; cursor: not-allowed; box-shadow: none; transform: none;}
-
-    .progress-container { 
-      height: 20px; 
-      background: #fff; 
-      border: var(--border-thin); 
-      border-radius: 20px; 
-      margin: 20px 0; 
-      overflow: hidden; 
-      display: none; 
-      box-shadow: var(--input-shadow);
-    }
-    .progress-bar { 
-      height: 100%; 
-      background: repeating-linear-gradient(45deg, var(--secondary), var(--secondary) 10px, #00c4bd 10px, #00c4bd 20px);
-      width: 0%; 
-      transition: width 0.3s ease; 
-      border-right: 2px solid #000;
-    }
-
-    #status { 
-      font-weight: 600;
-      font-size: 14px; 
-      color: #000; 
-      margin-bottom: 15px; 
-      min-height: 20px; 
-      padding: 10px;
-      background: #e8e8e8;
-      border: 1px solid #000;
-      border-radius: 6px;
-    }
-
-    /* Table Styles */
-    .table-container { 
-      overflow-x: auto; 
-      border: var(--border-thin); 
-      border-radius: var(--radius-md); 
-      margin-top: 20px; 
-      box-shadow: var(--input-shadow);
-      background: #fff;
-    }
-    table { width: 100%; border-collapse: collapse; min-width: 1200px; font-size: 14px; }
-    
-    th { 
-      background: var(--secondary); 
-      color: #000; 
-      padding: 12px; 
-      text-align: left; 
-      white-space: nowrap; 
-      position: sticky; 
-      top: 0; 
-      z-index: 10; 
-      border-bottom: var(--border-thin);
-      border-right: 1px solid #000;
-      font-weight: 700;
-      font-size: 15px;
-      user-select: none;
-    }
-    th.sortable { cursor: pointer; transition: background 0.2s; }
-    th.sortable:hover { background: #00c4bd; }
-    .sort-icon { font-size: 12px; margin-left: 5px; opacity: 0.5; }
-    th.sorted-asc .sort-icon { opacity: 1; content: '▲'; }
-    th.sorted-desc .sort-icon { opacity: 1; content: '▼'; }
-
-    td { 
-      border-bottom: 1px solid #000; 
-      border-right: 1px solid #000;
-      padding: 10px 12px; 
-      vertical-align: middle; 
-      color: #000; 
-      font-weight: 500;
-    }
-    td:last-child, th:last-child { border-right: none; }
-    tr:nth-child(even) { background-color: #f9f9f9; }
-    tr:hover { background-color: #fffde7; }
-
-    /* New User Cell Style */
-    .user-link {
-      text-decoration: none;
-      color: inherit;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 5px;
-      border-radius: 8px;
-      transition: background 0.1s;
-    }
-    .user-link:hover { background: rgba(0,0,0,0.05); }
-    
-    .avatar-img { 
-      width: 45px; 
-      height: 45px; 
-      border-radius: 50%; 
-      object-fit: cover; 
-      border: 2px solid #000; 
-      background: #fff;
-      flex-shrink: 0;
-    }
-    
-    .user-info { display: flex; flex-direction: column; justify-content: center; }
-    .user-name { font-weight: 800; font-size: 14px; line-height: 1.2; }
-    .user-handle { font-size: 12px; color: #666; line-height: 1.4; }
-
-    /* Column Specifics */
-    .val-highlight { color: #0075ff; font-weight: 700; } 
-    .val-super { color: #d63384; font-weight: 800; } 
-    .val-percent { color: #198754; font-weight: 700; background: #e6f7ed; padding: 2px 6px; border-radius: 6px; border: 1px solid #000; }
-    
-    .status-badge { 
-      padding: 4px 8px; 
-      border-radius: 20px; 
-      font-size: 11px; 
-      font-weight: 800; 
-      text-transform: uppercase; 
-      border: 2px solid #000;
-      box-shadow: 2px 2px 0px rgba(0,0,0,0.2);
-    }
-    .status-ok { background: #88ff8c; color: #000; }
-    .status-err { background: #ff8888; color: #000; }
-    .status-wait { background: #fff3cd; color: #000; }
-
-    @media (max-width: 768px) {
-      .control-panel { grid-template-columns: 1fr; }
-      h1 { font-size: 1.8rem; }
-      main { padding: 15px; }
-      .btn-group { flex-direction: row; }
-      .nav-top { justify-content: center; }
-    }
+    :root{--primary:#ff0050;--secondary:#00f2ea;--bg-color:#f0f4f8;--border-color:#000;--card-bg:#fff;--hard-shadow:8px 8px 0px #000;--btn-shadow:4px 4px 0px #000;--input-shadow:2px 2px 0px #000;--border-thick:3px solid #000;--border-thin:2px solid #000;--radius-xl:15px;--radius-md:10px;--radius-pill:50px}
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:'Be Vietnam Pro',sans-serif;padding:20px;background:var(--bg-color);color:#000;background-image:radial-gradient(#000 1px,transparent 1px);background-size:20px 20px}
+    button,input,textarea,table,th,td,span,label,small,a,select{font-family:'Be Vietnam Pro',sans-serif!important}
+    .nav-top{max-width:1400px;margin:0 auto 20px auto;display:flex;justify-content:flex-end}
+    .btn-home{text-decoration:none;background:#fff;color:#000;font-weight:700;font-size:15px;padding:10px 24px;border:var(--border-thick);border-radius:var(--radius-pill);box-shadow:var(--btn-shadow);display:inline-flex;align-items:center;gap:8px;transition:all .1s}
+    .btn-home:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0px #000}
+    .btn-home:active{transform:translate(2px,2px);box-shadow:none}
+    main{max-width:1400px;margin:0 auto;background:var(--card-bg);padding:30px;border-radius:var(--radius-xl);border:var(--border-thick);box-shadow:var(--hard-shadow)}
+    h1{font-family:'Fredoka',cursive!important;font-size:2.5rem;text-align:center;color:var(--primary);text-transform:uppercase;letter-spacing:1px;margin-bottom:30px;text-shadow:2px 2px 0 #000;-webkit-text-stroke:1px black}
+    .control-panel{display:grid;grid-template-columns:1fr 320px;gap:25px;margin-bottom:30px}
+    .input-section{display:flex;flex-direction:column;gap:10px}
+    textarea,input[type="number"]{width:100%;padding:15px;border:var(--border-thin);border-radius:var(--radius-md);box-shadow:var(--input-shadow);font-size:15px;transition:.2s}
+    textarea:focus,input:focus{outline:none;background:#f0fbff;transform:translate(-1px,-1px);box-shadow:4px 4px 0 #000}
+    textarea{height:140px;resize:vertical}
+    .settings-section{background:#fff5f5;padding:20px;border-radius:var(--radius-md);border:var(--border-thin);box-shadow:var(--input-shadow);display:flex;flex-direction:column;gap:15px}
+    label{font-weight:700;font-size:16px;color:#000;display:block;margin-bottom:8px}
+    .btn-group{display:flex;flex-direction:column;gap:12px;margin-top:auto}
+    .export-row{display:flex;gap:8px}
+    #exportFormat{padding:12px;border:var(--border-thin);border-radius:var(--radius-md);box-shadow:3px 3px 0 #000;font-weight:700;cursor:pointer;background:#fff;outline:none;transition:all .1s}
+    #exportFormat:hover{transform:translate(-2px,-2px);box-shadow:5px 5px 0 #000}
+    button{padding:12px 20px;border:var(--border-thin);border-radius:var(--radius-md);cursor:pointer;font-weight:700;font-size:16px;color:#000;transition:all .1s;box-shadow:3px 3px 0 #000;text-transform:uppercase;flex:1}
+    button:hover:not(:disabled){transform:translate(-2px,-2px);box-shadow:5px 5px 0 #000}
+    button:active:not(:disabled){transform:translate(2px,2px);box-shadow:none}
+    #analyzeBtn{background:var(--secondary)}
+    #stopBtn{background:var(--primary);color:#fff;display:none}
+    #exportBtn{background:#ffbd00}
+    #exportBtn:disabled{background:#e0e0e0;color:#888;cursor:not-allowed;box-shadow:none;transform:none}
+    .progress-container{height:20px;background:#fff;border:var(--border-thin);border-radius:20px;margin:20px 0;overflow:hidden;display:none;box-shadow:var(--input-shadow)}
+    .progress-bar{height:100%;background:repeating-linear-gradient(45deg,var(--secondary),var(--secondary) 10px,#00c4bd 10px,#00c4bd 20px);width:0%;transition:width .3s ease;border-right:2px solid #000}
+    #status{font-weight:600;font-size:14px;color:#000;margin-bottom:15px;min-height:20px;padding:10px;background:#e8e8e8;border:1px solid #000;border-radius:6px}
+    /* Debug log */
+    #debug-log{background:#1a1a2e;color:#e0e0e0;border:2px solid #000;border-radius:10px;padding:12px;font-family:monospace;font-size:11px;max-height:100px;overflow-y:auto;margin-bottom:10px;display:none}
+    #debug-log .ok{color:#69ff47}#debug-log .fail{color:#ff6b6b}#debug-log .info{color:#87ceeb}
+    .toggle-debug{font-size:12px;color:#666;cursor:pointer;margin-bottom:8px;display:inline-block;font-weight:600}
+    .table-container{overflow-x:auto;border:var(--border-thin);border-radius:var(--radius-md);margin-top:20px;box-shadow:var(--input-shadow);background:#fff}
+    table{width:100%;border-collapse:collapse;min-width:1800px;font-size:13px}
+    th{background:var(--secondary);color:#000;padding:12px;text-align:left;white-space:nowrap;position:sticky;top:0;z-index:10;border-bottom:var(--border-thin);border-right:1px solid #000;font-weight:700;font-size:15px;user-select:none}
+    th.sortable{cursor:pointer;transition:background .2s}
+    th.sortable:hover{background:#00c4bd}
+    .sort-icon{font-size:12px;margin-left:5px;opacity:.5}
+    th.sorted-asc .sort-icon,th.sorted-desc .sort-icon{opacity:1}
+    td{border-bottom:1px solid #000;border-right:1px solid #000;padding:10px 12px;vertical-align:middle;color:#000;font-weight:500}
+    td:last-child,th:last-child{border-right:none}
+    tr:nth-child(even){background:#f9f9f9}tr:hover{background:#fffde7}
+    .user-link{text-decoration:none;color:inherit;display:flex;align-items:center;gap:12px;padding:5px;border-radius:8px;transition:background .1s}
+    .user-link:hover{background:rgba(0,0,0,.05)}
+    .avatar-img{width:45px;height:45px;border-radius:50%;object-fit:cover;border:2px solid #000;background:#fff;flex-shrink:0}
+    .user-info{display:flex;flex-direction:column;justify-content:center}
+    .user-name{font-weight:800;font-size:14px;line-height:1.2}
+    .user-handle{font-size:12px;color:#666;line-height:1.4}
+    .val-highlight{color:#0075ff;font-weight:700}
+    .val-super{color:#d63384;font-weight:800}
+    .val-percent{color:#198754;font-weight:700;background:#e6f7ed;padding:2px 6px;border-radius:6px;border:1px solid #000}
+    .status-badge{padding:4px 8px;border-radius:20px;font-size:11px;font-weight:800;text-transform:uppercase;border:2px solid #000;box-shadow:2px 2px 0 rgba(0,0,0,.2)}
+    .status-ok{background:#88ff8c;color:#000}
+    .status-err{background:#ff8888;color:#000}
+    .status-wait{background:#fff3cd;color:#000}
+    #copySheetBtn{background:#34a853;color:#fff;flex:none;width:auto;padding:12px 18px;font-size:14px}
+    #copySheetBtn:hover:not(:disabled){transform:translate(-2px,-2px);box-shadow:5px 5px 0 #000}
+    #copySheetBtn:disabled{background:#e0e0e0;color:#888;cursor:not-allowed;box-shadow:none;transform:none}
+    .copy-toast{display:none;position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:#34a853;color:#fff;font-weight:700;padding:12px 24px;border-radius:50px;border:2px solid #000;box-shadow:4px 4px 0 #000;z-index:9999;font-size:15px}
+    .copy-toast.show{display:block;animation:fadeInOut 2s ease forwards}
+    @keyframes fadeInOut{0%{opacity:0;bottom:20px}15%{opacity:1;bottom:30px}75%{opacity:1;bottom:30px}100%{opacity:0;bottom:40px}}
+    @media(max-width:768px){.control-panel{grid-template-columns:1fr}h1{font-size:1.8rem}main{padding:15px}.btn-group{flex-direction:row}.nav-top{justify-content:center}}
   </style>
 </head>
 <body>
-
-  <div class="nav-top">
-    <a href="https://thanhnhut201294.github.io/tool/" class="btn-home">
-      <span class="icon-back">↩</span> Quay lại trang chủ
-    </a>
-  </div>
+<div class="nav-top">
+  <a href="https://thanhnhut201294.github.io/tool/" class="btn-home">
+    <span style="font-weight:900;font-size:18px">↩</span> Quay lại trang chủ
+  </a>
+</div>
 
 <main>
-  <h1>📈 TikTok Analyzer V4.2</h1>
-
+  <h1>📈 TikTok Analyzer V5.0</h1>
   <div class="control-panel">
     <div class="input-section">
       <label>Danh sách Link Kênh hoặc Username (Mỗi dòng 1 kênh)</label>
       <textarea id="channelInput" placeholder="Ví dụ:&#10;https://www.tiktok.com/@vtv24news&#10;@mixigaming&#10;theanh28entertainment..."></textarea>
     </div>
-
     <div class="settings-section">
       <div>
         <label>Số lượng video</label>
         <input type="number" id="limitInput" value="10" min="1" max="48">
-        <small style="color: #000; font-weight: 600; font-size: 12px; display:block; margin-top:8px">ℹ️ Mặc định 10 video (Max 48).</small>
+        <small style="color:#000;font-weight:600;font-size:12px;display:block;margin-top:8px">ℹ️ Mặc định 10 video (Max 48).</small>
       </div>
-      
       <div class="btn-group">
         <button id="analyzeBtn">🚀 Quét Dữ Liệu</button>
         <button id="stopBtn">⏹ Dừng Lại</button>
-        
         <div class="export-row">
           <select id="exportFormat">
             <option value="csv">.CSV</option>
@@ -364,438 +103,390 @@
           </select>
           <button id="exportBtn" disabled>📥 Tải Về</button>
         </div>
+        <button id="copySheetBtn" disabled>📋 Copy → Google Sheets</button>
       </div>
     </div>
   </div>
 
-  <div class="progress-container">
-    <div class="progress-bar" id="progressBar"></div>
-  </div>
-  <div id="status">Sẵn sàng. Hãy nhập ID và bấm Quét.</div>
+  <div class="progress-container"><div class="progress-bar" id="progressBar"></div></div>
+  <div id="status">Sẵn sàng. Hãy nhập kênh và bấm Quét.</div>
+  <span class="toggle-debug" onclick="toggleDebug()">🔍 Xem log kỹ thuật ▼</span>
+  <div id="debug-log"></div>
 
   <div class="table-container">
     <table id="resultTable">
       <thead>
         <tr>
-          <th width="3%">#</th>
-          <th width="25%">Kênh (Info)</th> 
-          <th width="5%">Videos</th>
-          
-          <th width="10%" class="sortable" onclick="handleSort('totalView')">T.View <span class="sort-icon">⇅</span></th>
-          <th width="10%" class="sortable" onclick="handleSort('avgView')">TB View <span class="sort-icon">⇅</span></th>
-          
-          <th width="10%" class="sortable" onclick="handleSort('totalInteraction')">T.Tác <span class="sort-icon">⇅</span></th>
-          <th width="10%" class="sortable" onclick="handleSort('avgInteraction')">TB T.Tác <span class="sort-icon">⇅</span></th>
-          <th width="8%" class="sortable" onclick="handleSort('engagementRate')">% T.Tác <span class="sort-icon">⇅</span></th>
-
-          <th width="8%">T.Cmt</th>
-          <th width="8%">TB Cmt</th>
-          
-          <th width="7%">Status</th>
+          <th width="2%">#</th>
+          <th width="18%">Kênh</th>
+          <th width="4%" class="sortable" onclick="handleSort('count')">Số Video <span class="sort-icon">⇅</span></th>
+          <th width="7%" class="sortable" onclick="handleSort('totalView')">Tổng Lượt Xem <span class="sort-icon">⇅</span></th>
+          <th width="6%" class="sortable" onclick="handleSort('avgView')">TB Lượt Xem <span class="sort-icon">⇅</span></th>
+          <th width="6%" class="sortable" onclick="handleSort('engagementRate')">Tỷ Lệ Tương Tác <span class="sort-icon">⇅</span></th>
+          <th width="6%" class="sortable" onclick="handleSort('totalInteraction')">Tổng Tương Tác <span class="sort-icon">⇅</span></th>
+          <th width="6%" class="sortable" onclick="handleSort('avgInteraction')">TB Tương Tác <span class="sort-icon">⇅</span></th>
+          <th width="6%" class="sortable" onclick="handleSort('totalLike')">Tổng Tim ❤️ <span class="sort-icon">⇅</span></th>
+          <th width="5%" class="sortable" onclick="handleSort('avgLike')">TB Tim ❤️ <span class="sort-icon">⇅</span></th>
+          <th width="5%" class="sortable" onclick="handleSort('totalCmt')">Tổng Comment 💬 <span class="sort-icon">⇅</span></th>
+          <th width="5%" class="sortable" onclick="handleSort('avgCmt')">TB Comment 💬 <span class="sort-icon">⇅</span></th>
+          <th width="5%" class="sortable" onclick="handleSort('totalShare')">Tổng Share 🔁 <span class="sort-icon">⇅</span></th>
+          <th width="5%" class="sortable" onclick="handleSort('avgShare')">TB Share 🔁 <span class="sort-icon">⇅</span></th>
+          <th width="5%" class="sortable" onclick="handleSort('totalSave')">Tổng Save 🔖 <span class="sort-icon">⇅</span></th>
+          <th width="5%" class="sortable" onclick="handleSort('avgSave')">TB Save 🔖 <span class="sort-icon">⇅</span></th>
+          <th width="5%">Trạng Thái</th>
         </tr>
       </thead>
-      <tbody>
-        </tbody>
+      <tbody></tbody>
     </table>
   </div>
-  <div style="margin-top: 15px; font-size: 13px; font-weight: bold; color: #555;">
-    * Bấm vào tiêu đề cột để Sắp xếp (Tăng/Giảm).
-  </div>
+  <div id="copyToast" class="copy-toast">✅ Đã copy! Paste vào Google Sheets (Ctrl+V)</div>
+  <div style="margin-top:15px;font-size:13px;font-weight:bold;color:#555">* Bấm vào tiêu đề cột để sắp xếp tăng/giảm.</div>
 </main>
 
 <script>
-  // === CONFIG & UTILS ===
-  const PROXY_LIST = [
-    { url: 'https://api.codetabs.com/v1/proxy?quest=', type: 'direct' },
-    { url: 'https://api.allorigins.win/get?url=', type: 'wrapped' },
-    { url: 'https://corsproxy.io/?', type: 'direct' }
-  ];
+let isRunning = false;
+let resultsData = [];
+let currentSort = { col: null, dir: 'desc' };
+let debugMode = false;
 
-  let isRunning = false;
-  let resultsData = [];
-  let currentSort = { col: null, dir: 'desc' }; 
+const $ = id => document.getElementById(id);
 
-  function log(msg) {
-    document.getElementById('status').textContent = msg;
+function log(msg) { $('status').textContent = msg; }
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+
+function dlog(msg, cls='info') {
+  const el = $('debug-log');
+  const d = document.createElement('div');
+  d.className = cls;
+  d.textContent = `[${new Date().toLocaleTimeString()}] ${msg}`;
+  el.appendChild(d);
+  el.scrollTop = el.scrollHeight;
+}
+
+function toggleDebug() {
+  debugMode = !debugMode;
+  $('debug-log').style.display = debugMode ? 'block' : 'none';
+  document.querySelector('.toggle-debug').textContent = debugMode ? '🔍 Ẩn log kỹ thuật ▲' : '🔍 Xem log kỹ thuật ▼';
+}
+
+function extractUsername(input) {
+  input = input.trim();
+  try {
+    if (input.includes('tiktok.com')) {
+      const match = input.match(/@([a-zA-Z0-9_.]+)/);
+      return match ? match[1] : null;
+    }
+    if (input.startsWith('@')) return input.substring(1);
+    return input || null;
+  } catch(e) { return null; }
+}
+
+// ============================================================
+// GỌI THẲNG TIKWM — không proxy
+// ============================================================
+async function tikwmFetch(url) {
+  dlog(`GET ${url.slice(0, 90)}...`);
+  const res = await fetch(url, { signal: AbortSignal.timeout(15000) });
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  const data = await res.json();
+  if (data.code === -1) throw new Error('Rate limit / blocked');
+  if (data.code !== 0) throw new Error(`TikWM error: ${data.msg || data.code}`);
+  return data;
+}
+
+async function fetchUserVideos(username, limit) {
+  const allVideos = [];
+  let cursor = 0;
+  let hasMore = true;
+  if (limit > 48) limit = 48;
+
+  dlog(`Bắt đầu fetch @${username}, limit=${limit}`);
+
+  while (hasMore && allVideos.length < limit) {
+    const url = `https://www.tikwm.com/api/user/posts?unique_id=${encodeURIComponent(username)}&count=33&cursor=${cursor}`;
+    const data = await tikwmFetch(url);
+
+    if (!data?.data?.videos || data.data.videos.length === 0) {
+      if (allVideos.length === 0) throw new Error('Kênh private hoặc không tìm thấy');
+      break;
+    }
+
+    for (const v of data.data.videos) {
+      if (allVideos.length >= limit) break;
+      allVideos.push(v);
+    }
+
+    cursor = data.data.cursor;
+    hasMore = data.data.hasMore;
+    dlog(`Trang xong — ${allVideos.length} video, hasMore=${hasMore}`, 'ok');
+
+    if (hasMore && allVideos.length < limit) await sleep(800);
   }
 
-  function sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-  }
+  dlog(`@${username}: tổng ${allVideos.length} video`, 'ok');
+  return allVideos;
+}
 
-  function extractUsername(input) {
-    input = input.trim();
+// ============================================================
+// MAIN LOGIC
+// ============================================================
+$('analyzeBtn').addEventListener('click', async () => {
+  const inputRaw = $('channelInput').value;
+  const limit = parseInt($('limitInput').value) || 10;
+  const lines = inputRaw.split('\n').filter(l => l.trim());
+  const usernames = [...new Set(lines.map(extractUsername).filter(Boolean))];
+
+  if (!usernames.length) { alert('Vui lòng nhập ít nhất 1 kênh!'); return; }
+
+  isRunning = true;
+  resultsData = [];
+  currentSort = { col: null, dir: 'desc' };
+  document.querySelector('tbody').innerHTML = '';
+  $('debug-log').innerHTML = '';
+
+  $('analyzeBtn').style.display = 'none';
+  $('stopBtn').style.display = 'inline-block';
+  $('exportBtn').disabled = true;
+  document.querySelector('.progress-container').style.display = 'block';
+  updateProgress(0, usernames.length);
+
+  dlog(`Quét ${usernames.length} kênh — gọi thẳng tikwm.com`);
+
+  for (let i = 0; i < usernames.length; i++) {
+    if (!isRunning) break;
+    const user = usernames[i];
+    log(`⏳ Đang xử lý [${i+1}/${usernames.length}]: @${user}...`);
+    dlog(`--- Kênh ${i+1}: @${user}`);
+
+    const tbody = document.querySelector('tbody');
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td>${i+1}</td><td colspan="16" style="text-align:center"><span class="status-badge status-wait">Đang tải...</span></td>`;
+    tbody.appendChild(tr);
+
     try {
-      if (input.includes('tiktok.com')) {
-        const match = input.match(/@([a-zA-Z0-9_.]+)/);
-        return match ? match[1] : null;
-      }
-      if (input.startsWith('@')) return input.substring(1);
-      return input;
-    } catch (e) {
-      return null;
+      const videos = await fetchUserVideos(user, limit);
+      const stats = calculateStats(videos);
+      const author = videos[0]?.author;
+
+      const finalData = {
+        id: i+1, user, status: 'OK',
+        nickname: author?.unique_id || user,
+        displayName: author?.nickname || user,
+        avatar: author?.avatar || '',
+        ...stats
+      };
+      resultsData.push(finalData);
+      renderSingleRow(tr, finalData);
+
+    } catch(err) {
+      dlog(`FAIL @${user}: ${err.message}`, 'fail');
+      resultsData.push({ id:i+1, user, status:'Error', errorMsg: err.message, totalView:0, avgView:0, totalInteraction:0, engagementRate:0 });
+      tr.innerHTML = `
+        <td>${i+1}</td>
+        <td style="font-weight:700">@${user}</td>
+        <td colspan="14" style="color:#d50000;font-weight:700">⚠️ ${err.message}</td>
+        <td><span class="status-badge status-err">FAIL</span></td>
+      `;
     }
+
+    updateProgress(i+1, usernames.length);
+    if (i < usernames.length - 1) await sleep(1000);
   }
 
-  // === FETCH ENGINE ===
-  async function smartFetch(targetUrl) {
-    for (const proxy of PROXY_LIST) {
-      try {
-        const finalUrl = proxy.url + encodeURIComponent(targetUrl);
-        const res = await fetch(finalUrl);
-        if (!res.ok) throw new Error('Network Error');
-        
-        let data;
-        if (proxy.type === 'wrapped') {
-          const temp = await res.json();
-          if(!temp.contents) throw new Error("No contents");
-          data = JSON.parse(temp.contents);
-        } else {
-          data = await res.json();
-        }
-        if (data.code === -1) throw new Error("Limit Reached");
-        return data; 
-      } catch (e) {
-        continue;
-      }
-    }
-    throw new Error("Connection failed");
-  }
+  finishProcess();
+});
 
-  async function fetchUserVideos(username, limit) {
-    const allVideos = [];
-    let cursor = 0;
-    let hasMore = true;
-    if (limit > 48) limit = 48;
+$('stopBtn').addEventListener('click', () => {
+  isRunning = false;
+  log('⛔ Đã dừng.');
+  finishProcess();
+});
 
-    while (hasMore && allVideos.length < limit) {
-      const targetUrl = `https://www.tikwm.com/api/user/posts?unique_id=${username}&count=33&cursor=${cursor}`;
-      const data = await smartFetch(targetUrl);
+function finishProcess() {
+  isRunning = false;
+  $('analyzeBtn').style.display = 'inline-block';
+  $('stopBtn').style.display = 'none';
+  const hasOK = resultsData.filter(d=>d.status==='OK').length > 0;
+  $('exportBtn').disabled = !hasOK;
+  $('copySheetBtn').disabled = !hasOK;
+  const ok = resultsData.filter(d=>d.status==='OK').length;
+  const err = resultsData.filter(d=>d.status==='Error').length;
+  log(`✅ Hoàn tất: ${ok} thành công${err > 0 ? `, ${err} lỗi` : ''}.`);
+  dlog(`Xong: ${ok} OK / ${err} lỗi`, ok > 0 ? 'ok' : 'fail');
+}
 
-      if (!data?.data?.videos) {
-        if (allVideos.length === 0) throw new Error('Private/Not Found');
-        break;
-      }
-      for (const v of data.data.videos) {
-        if (allVideos.length >= limit) break;
-        allVideos.push(v);
-      }
-      cursor = data.data.cursor;
-      hasMore = data.data.hasMore;
-      if (hasMore) await sleep(800); 
-    }
-    return allVideos;
-  }
+function updateProgress(cur, total) {
+  $('progressBar').style.width = `${(cur/total)*100}%`;
+}
 
-  // === MAIN LOGIC ===
-  document.getElementById('analyzeBtn').addEventListener('click', async () => {
-    const inputRaw = document.getElementById('channelInput').value;
-    const limit = parseInt(document.getElementById('limitInput').value) || 10;
-    
-    const lines = inputRaw.split('\n').filter(line => line.trim() !== '');
-    const usernames = [...new Set(lines.map(extractUsername).filter(u => u))]; 
-
-    if (usernames.length === 0) return alert('Vui lòng nhập ít nhất 1 link kênh hoặc username!');
-
-    isRunning = true;
-    resultsData = [];
-    currentSort = { col: null, dir: 'desc' };
-    
-    const tbody = document.querySelector('tbody');
-    tbody.innerHTML = '';
-    
-    document.getElementById('analyzeBtn').style.display = 'none';
-    document.getElementById('stopBtn').style.display = 'inline-block';
-    document.getElementById('exportBtn').disabled = true;
-    document.querySelector('.progress-container').style.display = 'block';
-    updateProgress(0, usernames.length);
-
-    for (let i = 0; i < usernames.length; i++) {
-      if (!isRunning) break;
-
-      const user = usernames[i];
-      log(`⏳ Đang xử lý [${i+1}/${usernames.length}]: ${user}...`);
-      
-      const tr = document.createElement('tr');
-      tr.innerHTML = `<td>${i+1}</td><td colspan="10" class="status-badge status-wait" style="text-align:center">Đang tải dữ liệu...</td>`;
-      tbody.appendChild(tr);
-
-      try {
-        const videos = await fetchUserVideos(user, limit);
-        const stats = calculateStats(videos);
-        const author = videos[0]?.author;
-
-        const finalData = {
-          id: i + 1,
-          user: user,
-          nickname: author?.unique_id || user,
-          displayName: author?.nickname || user,
-          avatar: author?.avatar || '',
-          ...stats,
-          status: 'OK'
-        };
-
-        resultsData.push(finalData);
-        renderSingleRow(tr, finalData);
-        
-      } catch (error) {
-        const errorData = {
-           id: i + 1, user: user, status: 'Error', errorMsg: error.message,
-           totalView: 0, avgView: 0, totalInteraction: 0
-        };
-        resultsData.push(errorData);
-        tr.innerHTML = `
-          <td>${i+1}</td>
-          <td>${user}</td>
-          <td colspan="9" style="color:red; font-weight:bold;">Lỗi: ${error.message}</td>
-          <td><span class="status-badge status-err">FAIL</span></td>
-        `;
-      }
-
-      updateProgress(i + 1, usernames.length);
-      if (i < usernames.length - 1) await sleep(1000); 
-    }
-
-    finishProcess();
+function calculateStats(videos) {
+  let totalView=0, totalLike=0, totalCmt=0, totalShare=0, totalSave=0;
+  videos.forEach(v => {
+    totalView  += v.play_count    || 0;
+    totalLike  += v.digg_count    || 0;
+    totalCmt   += v.comment_count || 0;
+    totalShare += v.share_count   || 0;
+    totalSave  += v.collect_count || 0;
   });
-
-  document.getElementById('stopBtn').addEventListener('click', () => {
-    isRunning = false;
-    log('⛔ Đã dừng.');
-    finishProcess();
-  });
-
-  function finishProcess() {
-    isRunning = false;
-    document.getElementById('analyzeBtn').style.display = 'inline-block';
-    document.getElementById('stopBtn').style.display = 'none';
-    document.getElementById('exportBtn').disabled = false;
-    log('✅ Hoàn tất.');
-  }
-
-  function updateProgress(current, total) {
-    const percent = (current / total) * 100;
-    document.getElementById('progressBar').style.width = `${percent}%`;
-  }
-
-  function calculateStats(videos) {
-    let totalView = 0, totalLike = 0, totalCmt = 0, totalShare = 0, totalSave = 0;
-    videos.forEach(v => {
-      totalView += (v.play_count || 0);
-      totalLike += (v.digg_count || 0);
-      totalCmt  += (v.comment_count || 0);
-      totalShare += (v.share_count || 0);
-      totalSave += (v.collect_count || 0);
-    });
-
-    const count = videos.length;
-    const totalInteraction = totalLike + totalCmt + totalShare + totalSave;
-    
-    return {
-      count,
-      totalView,
-      avgView: count ? Math.round(totalView / count) : 0,
-      totalCmt,
-      avgCmt: count ? Math.round(totalCmt / count) : 0,
-      cmtRate: totalView > 0 ? ((totalCmt / totalView) * 100).toFixed(2) : 0,
-      totalInteraction,
-      avgInteraction: count ? Math.round(totalInteraction / count) : 0,
-      engagementRate: totalView > 0 ? ((totalInteraction / totalView) * 100).toFixed(2) : 0
-    };
-  }
-
-  // === RENDERING & SORTING ===
-  
-  function renderSingleRow(tr, d) {
-    tr.innerHTML = `
-      <td>${d.id}</td>
-      <td>
-        <a href="https://www.tiktok.com/@${d.nickname}" target="_blank" class="user-link">
-          <img src="${d.avatar}" class="avatar-img" onerror="this.src='https://via.placeholder.com/50'">
-          <div class="user-info">
-            <div class="user-name">${d.displayName}</div>
-            <div class="user-handle">@${d.nickname}</div>
-          </div>
-        </a>
-      </td>
-      <td style="text-align:center">${d.count}</td>
-      
-      <td>${d.totalView.toLocaleString()}</td>
-      <td class="val-highlight">${d.avgView.toLocaleString()}</td>
-      
-      <td>${d.totalInteraction.toLocaleString()}</td>
-      <td class="val-super">${d.avgInteraction.toLocaleString()}</td>
-      <td><span class="val-percent" style="background:#fff3cd; color:#664d03">${d.engagementRate}%</span></td>
-
-      <td>${d.totalCmt.toLocaleString()}</td>
-      <td class="val-highlight">${d.avgCmt.toLocaleString()}</td>
-      
-      <td><span class="status-badge status-ok">OK</span></td>
-    `;
-  }
-
-  function renderTableAll() {
-    const tbody = document.querySelector('tbody');
-    tbody.innerHTML = '';
-    
-    resultsData.forEach((d, index) => {
-      const tr = document.createElement('tr');
-      if(d.status === 'OK') {
-        renderSingleRow(tr, {...d, id: index + 1}); 
-      } else {
-        tr.innerHTML = `<td>${index+1}</td><td>${d.user}</td><td colspan="9" style="color:red">Lỗi: ${d.errorMsg}</td><td>Error</td>`;
-      }
-      tbody.appendChild(tr);
-    });
-  }
-
-  window.handleSort = function(colName) {
-    if (!resultsData.length) return;
-
-    if (currentSort.col === colName) {
-      currentSort.dir = currentSort.dir === 'asc' ? 'desc' : 'asc';
-    } else {
-      currentSort.col = colName;
-      currentSort.dir = 'desc'; 
-    }
-
-    document.querySelectorAll('th.sortable').forEach(th => {
-      th.classList.remove('sorted-asc', 'sorted-desc');
-    });
-    const activeHeader = document.querySelector(`th[onclick*="${colName}"]`);
-    if(activeHeader) activeHeader.classList.add(currentSort.dir === 'asc' ? 'sorted-asc' : 'sorted-desc');
-
-    resultsData.sort((a, b) => {
-      if (a.status !== 'OK') return 1; 
-      if (b.status !== 'OK') return -1;
-
-      let valA = parseFloat(a[colName]);
-      let valB = parseFloat(b[colName]);
-
-      if (currentSort.dir === 'asc') {
-        return valA - valB;
-      } else {
-        return valB - valA;
-      }
-    });
-
-    renderTableAll();
+  const count = videos.length;
+  const totalInteraction = totalLike + totalCmt + totalShare + totalSave;
+  return {
+    count,
+    totalView,
+    avgView: count ? Math.round(totalView/count) : 0,
+    totalLike,
+    avgLike: count ? Math.round(totalLike/count) : 0,
+    totalCmt,
+    avgCmt: count ? Math.round(totalCmt/count) : 0,
+    totalShare,
+    avgShare: count ? Math.round(totalShare/count) : 0,
+    totalSave,
+    avgSave: count ? Math.round(totalSave/count) : 0,
+    totalInteraction,
+    avgInteraction: count ? Math.round(totalInteraction/count) : 0,
+    engagementRate: totalView > 0 ? ((totalInteraction/totalView)*100).toFixed(2) : 0
   };
+}
 
-  // === EXPORT FUNCTIONALITY (CSV & XLS) ===
-  document.getElementById('exportBtn').addEventListener('click', () => {
-    if (!resultsData.length) return;
+function renderSingleRow(tr, d) {
+  const n = v => (v||0).toLocaleString('vi-VN');
+  tr.innerHTML = `
+    <td>${d.id}</td>
+    <td>
+      <a href="https://www.tiktok.com/@${d.nickname}" target="_blank" class="user-link">
+        <img src="${d.avatar}" class="avatar-img" onerror="this.src='https://placehold.co/50x50/eee/999?text=?'">
+        <div class="user-info">
+          <div class="user-name">${d.displayName}</div>
+          <div class="user-handle">@${d.nickname}</div>
+        </div>
+      </a>
+    </td>
+    <td style="text-align:center">${d.count}</td>
+    <td>${n(d.totalView)}</td>
+    <td class="val-highlight">${n(d.avgView)}</td>
+    <td><span class="val-percent">${d.engagementRate}%</span></td>
+    <td>${n(d.totalInteraction)}</td>
+    <td class="val-super">${n(d.avgInteraction)}</td>
+    <td>${n(d.totalLike)}</td>
+    <td class="val-highlight">${n(d.avgLike)}</td>
+    <td>${n(d.totalCmt)}</td>
+    <td class="val-highlight">${n(d.avgCmt)}</td>
+    <td>${n(d.totalShare)}</td>
+    <td class="val-highlight">${n(d.avgShare)}</td>
+    <td>${n(d.totalSave)}</td>
+    <td class="val-highlight">${n(d.avgSave)}</td>
+    <td><span class="status-badge status-ok">OK</span></td>
+  `;
+}
 
-    const format = document.getElementById('exportFormat').value;
-    const time = new Date().getTime();
-
-    if (format === 'csv') {
-      exportCSV(time);
+function renderTableAll() {
+  const tbody = document.querySelector('tbody');
+  tbody.innerHTML = '';
+  resultsData.forEach((d, i) => {
+    const tr = document.createElement('tr');
+    if (d.status === 'OK') {
+      renderSingleRow(tr, {...d, id: i+1});
     } else {
-      exportXLS(time);
+      tr.innerHTML = `<td>${i+1}</td><td style="font-weight:700">@${d.user}</td><td colspan="14" style="color:#d50000">⚠️ ${d.errorMsg}</td><td><span class="status-badge status-err">FAIL</span></td>`;
     }
+    tbody.appendChild(tr);
   });
+}
 
-  function exportCSV(time) {
-    const headers = [
-      'User ID', 'Ten Hien Thi',
-      'So Video', 
-      'Tong View', 'TB View', 
-      'Tong Tuong Tac', 'TB Tuong Tac', '% Tuong Tac', 
-      'Tong Comment', 'TB Comment', 
-      'Trang Thai'
-    ];
-    
-    const rows = resultsData.map(d => {
-      if (d.status !== 'OK') return [d.user, '', 0, 0, 0, 0, 0, 0, 0, 0, 'Loi'];
-      return [
-        d.nickname,
-        `"${d.displayName}"`,
-        d.count,
-        d.totalView, d.avgView,
-        d.totalInteraction, d.avgInteraction, `${d.engagementRate}%`,
-        d.totalCmt, d.avgCmt,
-        'OK'
-      ];
-    });
+window.handleSort = function(colName) {
+  if (!resultsData.length) return;
+  currentSort.dir = currentSort.col === colName ? (currentSort.dir === 'asc' ? 'desc' : 'asc') : 'desc';
+  currentSort.col = colName;
+  document.querySelectorAll('th.sortable').forEach(th => th.classList.remove('sorted-asc','sorted-desc'));
+  const hdr = document.querySelector(`th[onclick*="${colName}"]`);
+  if (hdr) hdr.classList.add(currentSort.dir === 'asc' ? 'sorted-asc' : 'sorted-desc');
+  resultsData.sort((a,b) => {
+    if (a.status!=='OK') return 1;
+    if (b.status!=='OK') return -1;
+    const va=parseFloat(a[colName]), vb=parseFloat(b[colName]);
+    return currentSort.dir==='asc' ? va-vb : vb-va;
+  });
+  renderTableAll();
+};
 
-    const csvContent = [headers.join(','), ...rows.map(r => r.join(','))].join('\n');
-    const blob = new Blob(["\uFEFF" + csvContent], { type: 'text/csv;charset=utf-8;' });
-    downloadFile(blob, `TikTok_Data_${time}.csv`);
-  }
+// ============================================================
+// EXPORT & COPY
+// ============================================================
+$('exportBtn').addEventListener('click', () => {
+  if (!resultsData.length) return;
+  const fmt = $('exportFormat').value;
+  const time = new Date().getTime();
+  fmt === 'csv' ? exportCSV(time) : exportXLS(time);
+});
 
-  function exportXLS(time) {
-    // Tạo nội dung HTML Table cho Excel
-    let tableHTML = `
-      <table border="1">
-        <thead>
-          <tr style="background-color:#00f2ea; color:#000;">
-            <th>User ID</th>
-            <th>Tên Hiển Thị</th>
-            <th>Số Video</th>
-            <th>Tổng View</th>
-            <th>TB View</th>
-            <th>Tổng Tương Tác</th>
-            <th>TB Tương Tác</th>
-            <th>% Tương Tác</th>
-            <th>Tổng Comment</th>
-            <th>TB Comment</th>
-            <th>Trạng Thái</th>
-          </tr>
-        </thead>
-        <tbody>
-    `;
+const HEADERS_VI = ['Username','Tên Hiển Thị','Số Video','Tổng Lượt Xem','TB Lượt Xem','Tỷ Lệ Tương Tác (%)','Tổng Tương Tác','TB Tương Tác','Tổng Tim','TB Tim','Tổng Comment','TB Comment','Tổng Share','TB Share','Tổng Save','TB Save','Trạng Thái'];
 
-    resultsData.forEach(d => {
-      if(d.status !== 'OK') {
-        tableHTML += `<tr><td>${d.user}</td><td colspan="10" style="color:red">Lỗi</td></tr>`;
-      } else {
-        tableHTML += `
-          <tr>
-            <td>${d.nickname}</td>
-            <td>${d.displayName}</td>
-            <td>${d.count}</td>
-            <td>${d.totalView}</td>
-            <td>${d.avgView}</td>
-            <td>${d.totalInteraction}</td>
-            <td>${d.avgInteraction}</td>
-            <td>${d.engagementRate}%</td>
-            <td>${d.totalCmt}</td>
-            <td>${d.avgCmt}</td>
-            <td>OK</td>
-          </tr>
-        `;
-      }
-    });
+function rowToArray(d) {
+  if (d.status !== 'OK') return [d.user,'',0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Lỗi'];
+  return [
+    d.nickname, d.displayName, d.count,
+    d.totalView, d.avgView,
+    d.engagementRate,
+    d.totalInteraction, d.avgInteraction,
+    d.totalLike, d.avgLike,
+    d.totalCmt, d.avgCmt,
+    d.totalShare, d.avgShare,
+    d.totalSave, d.avgSave,
+    'OK'
+  ];
+}
 
-    tableHTML += `</tbody></table>`;
+function exportCSV(time) {
+  const rows = resultsData.map(rowToArray);
+  const csv = [HEADERS_VI.join(','), ...rows.map(r => r.map(v => typeof v === 'string' && v.includes(',') ? `"${v}"` : v).join(','))].join('\n');
+  downloadFile(new Blob(['\uFEFF'+csv], {type:'text/csv;charset=utf-8;'}), `TikTok_Analyzer_${time}.csv`);
+}
 
-    // Wrap in standard Excel HTML template
-    const fullHTML = `
-      <html xmlns:o="urn:schemas-microsoft-com:office:office" 
-            xmlns:x="urn:schemas-microsoft-com:office:excel" 
-            xmlns="http://www.w3.org/TR/REC-html40">
-      <head>
-        <meta charset="utf-8">
-        </head>
-      <body>${tableHTML}</body>
-      </html>
-    `;
+function exportXLS(time) {
+  const headerRow = `<tr style="background:#00f2ea">${HEADERS_VI.map(h=>`<th>${h}</th>`).join('')}</tr>`;
+  let dataRows = resultsData.map(d => {
+    if (d.status !== 'OK') return `<tr><td>${d.user}</td><td colspan="15" style="color:red">Lỗi: ${d.errorMsg}</td><td>FAIL</td></tr>`;
+    const r = rowToArray(d);
+    return `<tr>${r.map(v=>`<td>${v}</td>`).join('')}</tr>`;
+  }).join('');
+  const html = `<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><meta charset="utf-8"></head><body><table border="1"><thead>${headerRow}</thead><tbody>${dataRows}</tbody></table></body></html>`;
+  downloadFile(new Blob([html], {type:'application/vnd.ms-excel'}), `TikTok_Analyzer_${time}.xls`);
+}
 
-    const blob = new Blob([fullHTML], { type: 'application/vnd.ms-excel' });
-    downloadFile(blob, `TikTok_Data_${time}.xls`);
-  }
+$('copySheetBtn').addEventListener('click', () => {
+  if (!resultsData.length) return;
+  const lines = [HEADERS_VI.join('\t')];
+  resultsData.forEach(d => {
+    lines.push(rowToArray(d).join('\t'));
+  });
+  const tsv = lines.join('\n');
+  navigator.clipboard.writeText(tsv).then(() => {
+    const toast = $('copyToast');
+    toast.classList.remove('show');
+    void toast.offsetWidth; // reflow to restart animation
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 2200);
+  }).catch(() => {
+    // fallback for older browsers
+    const ta = document.createElement('textarea');
+    ta.value = tsv;
+    ta.style.position = 'fixed'; ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    alert('✅ Đã copy! Paste vào Google Sheets (Ctrl+V)');
+  });
+});
 
-  function downloadFile(blob, filename) {
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement("a");
-    link.href = url;
-    link.setAttribute("download", filename);
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  }
-
+function downloadFile(blob, filename) {
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+}
 </script>
 </body>
 </html>
