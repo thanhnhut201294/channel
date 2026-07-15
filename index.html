@@ -182,7 +182,7 @@ function extractUsername(input) {
 }
 
 // ============================================================
-// GỌI THẲNG TIKWM — không proxy
+// GỌI QUA VERCEL PROXY
 // ============================================================
 async function tikwmFetch(url) {
   dlog(`GET ${url.slice(0, 90)}...`);
@@ -203,7 +203,8 @@ async function fetchUserVideos(username, limit) {
   dlog(`Bắt đầu fetch @${username}, limit=${limit}`);
 
   while (hasMore && allVideos.length < limit) {
-    const url = `https://www.tikwm.com/api/user/posts?unique_id=${encodeURIComponent(username)}&count=12&cursor=${cursor}`;
+    // Thay đổi URL gọi qua Vercel
+    const url = `https://channel-orpin-seven.vercel.app/api/tikwm?unique_id=${encodeURIComponent(username)}&count=12&cursor=${cursor}`;
     const data = await tikwmFetch(url);
 
     if (!data?.data?.videos || data.data.videos.length === 0) {
@@ -250,7 +251,7 @@ $('analyzeBtn').addEventListener('click', async () => {
   document.querySelector('.progress-container').style.display = 'block';
   updateProgress(0, usernames.length);
 
-  dlog(`Quét ${usernames.length} kênh — gọi thẳng tikwm.com`);
+  dlog(`Quét ${usernames.length} kênh — gọi qua Vercel Proxy`);
 
   for (let i = 0; i < usernames.length; i++) {
     if (!isRunning) break;
