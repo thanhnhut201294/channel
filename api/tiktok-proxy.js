@@ -13,30 +13,27 @@ export default async function handler(req, res) {
   const targetUrl = `https://www.tikwm.com/api/user/posts?unique_id=${encodeURIComponent(unique_id)}&count=${count}&cursor=${cursor}`;
 
   try {
-    const resp = await fetchWithRetry(targetUrl, 3);
-    const data = await resp.json();
-    return res.status(200).json(data);
+    const resp = await fetch(targetUrl, {
+      headers: {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+      },
+      signal: AbortSignal.timeout(10000),
+    });
+
+    const text = await resp.text(); // lấy raw text trước, không parse vội
+
+    try {
+      const data = JSON.parse(text);
+      return res.status(200).json(data);
+    } catch {
+      // Không phải JSON -> trả về debug info để xem tikwm nói gì
+      return res.status(502).json({
+        error: "tikwm không trả về JSON",
+        status: resp.status,
+        preview: text.slice(0, 500), // 500 ký tự đầu để xem nội dung
+      });
+    }
   } catch (err) {
     return res.status(502).json({ error: err.message });
-  }
-}
-
-async function fetchWithRetry(url, retries) {
-  for (let i = 0; i < retries; i++) {
-    try {
-      const resp = await fetch(url, {
-        headers: {
-          "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
-        },
-        signal: AbortSignal.timeout(10000),
-      });
-      if (resp.status === 429 || resp.status >= 500) {
-        throw new Error(`HTTP ${resp.status}`);
-      }
-      return resp;
-    } catch (e) {
-      if (i === retries - 1) throw e;
-      await new Promise((r) => setTimeout(r, 1000 * (i + 1)));
-    }
   }
 }
