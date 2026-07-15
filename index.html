@@ -203,7 +203,7 @@ async function fetchUserVideos(username, limit) {
   dlog(`Bắt đầu fetch @${username}, limit=${limit}`);
 
   while (hasMore && allVideos.length < limit) {
-    const url = `https://www.tikwm.com/api/user/posts?unique_id=${encodeURIComponent(username)}&count=33&cursor=${cursor}`;
+    const url = `https://www.tikwm.com/api/user/posts?unique_id=${encodeURIComponent(username)}&count=12&cursor=${cursor}`;
     const data = await tikwmFetch(url);
 
     if (!data?.data?.videos || data.data.videos.length === 0) {
