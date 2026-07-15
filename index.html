@@ -171,56 +171,29 @@ function extractUsername(input) {
 }
 
 // ============================================================
-// GỌI THẲNG API (BẮT BUỘC BẬT EXTENSION ALLOW CORS)
+// GỌI THẲNG API CÓ KÈM CREDENTIALS (SỬ DỤNG COOKIE TRÌNH DUYỆT)
 // ============================================================
 async function tikwmFetch(url) {
   dlog(`GET ${url.slice(0, 90)}...`);
   try {
-    const res = await fetch(url, { signal: AbortSignal.timeout(15000) });
+    const res = await fetch(url, { 
+      signal: AbortSignal.timeout(15000),
+      // Ép trình duyệt gửi kèm Cookie cf_clearance đã lưu khi gọi chéo tên miền
+      credentials: 'include' 
+    });
+    
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const data = await res.json();
     if (data.code === -1) throw new Error('Rate limit / blocked');
     if (data.code !== 0) throw new Error(`TikWM error: ${data.msg || data.code}`);
     return data;
   } catch (err) {
+    // Bắt lỗi nếu người dùng chưa bật Extension hoặc chưa vượt captcha
     if (err.name === 'TypeError' && err.message.includes('Failed to fetch')) {
-      throw new Error('CORS Lỗi. Bạn CHƯA BẬT tiện ích Allow CORS.');
+      throw new Error('CORS Lỗi. Bạn CHƯA BẬT tiện ích "Allow CORS" hoặc chưa lấy cookie.');
     }
     throw err;
   }
-}
-
-async function fetchUserVideos(username, limit) {
-  const allVideos = [];
-  let cursor = 0;
-  let hasMore = true;
-  if (limit > 48) limit = 48;
-
-  dlog(`Bắt đầu fetch @${username}, limit=${limit}`);
-
-  while (hasMore && allVideos.length < limit) {
-    // Gọi thẳng không cần qua Proxy
-    const url = `https://www.tikwm.com/api/user/posts?unique_id=${encodeURIComponent(username)}&count=12&cursor=${cursor}`;
-    const data = await tikwmFetch(url);
-
-    if (!data?.data?.videos || data.data.videos.length === 0) {
-      if (allVideos.length === 0) throw new Error('Kênh private hoặc không tìm thấy');
-      break;
-    }
-
-    for (const v of data.data.videos) {
-      if (allVideos.length >= limit) break;
-      allVideos.push(v);
-    }
-
-    cursor = data.data.cursor;
-    hasMore = data.data.hasMore;
-    dlog(`Trang xong — ${allVideos.length} video`, 'ok');
-
-    if (hasMore && allVideos.length < limit) await sleep(800);
-  }
-
-  return allVideos;
 }
 
 // ============================================================
