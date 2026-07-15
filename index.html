@@ -133,7 +133,7 @@
           <th width="5%" class="sortable" onclick="handleSort('avgShare')">TB Share 🔁 <span class="sort-icon">⇅</span></th>
           <th width="5%" class="sortable" onclick="handleSort('totalSave')">Tổng Save 🔖 <span class="sort-icon">⇅</span></th>
           <th width="5%" class="sortable" onclick="handleSort('avgSave')">TB Save 🔖 <span class="sort-icon">⇅</span></th>
-          <th width="5%">Trạng Thái</th>
+          <th width="5%">Trạng Thế</th>
         </tr>
       </thead>
       <tbody></tbody>
@@ -148,6 +148,11 @@ let isRunning = false;
 let resultsData = [];
 let currentSort = { col: null, dir: 'desc' };
 let debugMode = false;
+
+// ============================================================
+// DÁN LINK GOOGLE APPS SCRIPT WEB APP CỦA BẠN VÀO ĐÂY
+// ============================================================
+const GAS_URL = "https://script.google.com/macros/s/AKfycbzIoKrKnCJfwLIjlcZnyRCPCu1s0L5Q5-nviPU1vBXDL7V1vw46CinY0hzHd3yLFRHM/exec";
 
 const $ = id => document.getElementById(id);
 
@@ -182,7 +187,7 @@ function extractUsername(input) {
 }
 
 // ============================================================
-// GỌI QUA VERCEL PROXY
+// GỌI THÔNG QUA CUSTOM GOOGLE APPS SCRIPT PROXY
 // ============================================================
 async function tikwmFetch(url) {
   dlog(`GET ${url.slice(0, 90)}...`);
@@ -203,8 +208,8 @@ async function fetchUserVideos(username, limit) {
   dlog(`Bắt đầu fetch @${username}, limit=${limit}`);
 
   while (hasMore && allVideos.length < limit) {
-    // Thay đổi URL gọi qua Vercel
-    const url = `https://channel-orpin-seven.vercel.app/api/tikwm?unique_id=${encodeURIComponent(username)}&count=12&cursor=${cursor}`;
+    // Chuyển hướng endpoint sang gọi qua Google Apps Script Web App
+    const url = `${GAS_URL}?unique_id=${encodeURIComponent(username)}&count=12&cursor=${cursor}`;
     const data = await tikwmFetch(url);
 
     if (!data?.data?.videos || data.data.videos.length === 0) {
@@ -238,6 +243,7 @@ $('analyzeBtn').addEventListener('click', async () => {
   const usernames = [...new Set(lines.map(extractUsername).filter(Boolean))];
 
   if (!usernames.length) { alert('Vui lòng nhập ít nhất 1 kênh!'); return; }
+  if (GAS_URL.includes("DÁN_LINK_DEPLOY")) { alert('Vui lòng cấu hình GAS_URL trước khi chạy!'); return; }
 
   isRunning = true;
   resultsData = [];
@@ -251,7 +257,7 @@ $('analyzeBtn').addEventListener('click', async () => {
   document.querySelector('.progress-container').style.display = 'block';
   updateProgress(0, usernames.length);
 
-  dlog(`Quét ${usernames.length} kênh — gọi qua Vercel Proxy`);
+  dlog(`Quét ${usernames.length} kênh — gọi qua GAS Proxy`);
 
   for (let i = 0; i < usernames.length; i++) {
     if (!isRunning) break;
