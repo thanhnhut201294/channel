@@ -1,0 +1,7 @@
+{
+  "functions": {
+    "api/tiktok-proxy.js": {
+      "maxDuration": 15
+    }
+  }
+}
