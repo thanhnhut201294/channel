@@ -1,7 +1,8 @@
 {
-  "functions": {
-    "api/tiktok-proxy.js": {
-      "maxDuration": 15
+  "rewrites": [
+    {
+      "source": "/api/tikwm",
+      "destination": "https://www.tikwm.com/api/user/posts"
     }
-  }
+  ]
 }
